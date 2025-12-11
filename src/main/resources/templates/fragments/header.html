@@ -31,6 +31,7 @@
       <!-- Logged in -->
       <span th:if="${session.user != null}">
                 <strong th:text="${session.user.username}" style="margin-right:15px;"></strong>
+                <a th:href="@{/profile}">Edit Profile</a>
                 <a href="/logout">Logout</a>
             </span>
 

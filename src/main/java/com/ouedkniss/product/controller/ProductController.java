@@ -60,7 +60,7 @@ public class ProductController {
     @GetMapping("/add")
     public String showAddForm(Model model) {
         model.addAttribute("product", new Product());
-        return "addProduct";
+        return "add-product";
     }
 
     @PostMapping("/add")

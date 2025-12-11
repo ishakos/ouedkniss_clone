@@ -2,6 +2,10 @@
 
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+</head>
 
 <body>
 
@@ -20,14 +24,6 @@
     <h5 th:text="${p.description}"></h5>
     <p th:text="${p.price}"></p>
     <p>Seller: <span th:text="${p.user.username}"></span></p>
-
-    <div th:if="${session.user != null}">
-        <a th:href="@{'/messages/send?receiver=' + ${p.owner}}">Contact Seller</a>
-    </div>
-
-    <div th:if="${session.user == null}">
-        <a href="/login">Login to contact seller</a>
-    </div>
 
     <hr>
 </div>
