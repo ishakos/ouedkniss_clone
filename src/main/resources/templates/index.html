@@ -1,0 +1,45 @@
+
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<body>
+
+<h1>Ouedkniss</h1>
+
+<div th:if="${session.user == null}">
+    <a href="/login">Login</a> |
+    <a href="/register">Register</a>
+</div>
+
+<div th:if="${session.user != null}">
+    Welcome, <b th:text="${session.user.username}"></b> |
+    <a href="/logout">Logout</a> |
+    <a href="/products/add">Add Product</a>
+</div>
+
+<hr>
+
+<h2>Products</h2>
+
+<div th:each="p : ${products}">
+    <img  th:src="@{'/images/' + ${p.image}}" width="150">
+    <h3 th:text="${p.title}"></h3>
+    <h5 th:text="${p.description}"></h5>
+    <p th:text="${p.price}"></p>
+    <p>Seller: <span th:text="${p.user.username}"></span></p>
+
+    <div th:if="${session.user != null}">
+        <a th:href="@{'/messages/send?receiver=' + ${p.owner}}">Contact Seller</a>
+    </div>
+
+    <div th:if="${session.user == null}">
+        <a href="/login">Login to contact seller</a>
+    </div>
+
+    <hr>
+</div>
+
+
+</body>
+</html>

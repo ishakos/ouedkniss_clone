@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<!-- SHOW WHEN PRODUCT EXISTS -->
+<div th:if="${product != null}">
+
+    <h1>
+        Messages for product: <span th:text="${product.title}"></span>
+    </h1>
+
+    <!-- MESSAGE LIST -->
+    <div th:if="${messages != null and !messages.isEmpty()}">
+        <ul>
+            <li th:each="m : ${messages}">
+                <b th:text="${m.sender != null ? m.sender.name : 'Unknown'}"></b>:
+                <span th:text="${m.content}"></span>
+            </li>
+        </ul>
+    </div>
+
+    <p th:if="${messages == null or messages.isEmpty()}">No messages yet.</p>
+
+    <!-- SEND MESSAGE FORM -->
+    <form action="/messages" method="post">
+        <input type="hidden" name="productId" th:value="${product.id}"/>
+
+        <select name="senderId">
+            <option th:each="u : ${users}"
+                    th:value="${u.id}"
+                    th:text="${u.name}">
+            </option>
+        </select>
+
+        <select name="receiverId">
+            <option th:each="u : ${users}"
+                    th:value="${u.id}"
+                    th:text="${u.name}">
+            </option>
+        </select>
+
+        <input name="content" placeholder="Your message"/>
+        <button type="submit">Send</button>
+    </form>
+
+</div>
+
+<!-- SHOW WHEN PRODUCT IS NULL -->
+<div th:if="${product == null}">
+    <h2>Product not found.</h2>
+    <p>Please choose a valid product.</p>
+</div>
+
+</body>
+</html>

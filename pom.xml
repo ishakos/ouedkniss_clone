@@ -1,0 +1,74 @@
+<namespace:project xmlns:namespace="http://maven.apache.org/POM/4.0.0"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+         https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <namespace:modelVersion>4.0.0</namespace:modelVersion>
+
+    <namespace:groupId>com.ouedkniss</namespace:groupId>
+    <namespace:artifactId>ouedkniss</namespace:artifactId>
+    <namespace:version>0.0.1-SNAPSHOT</namespace:version>
+    <namespace:name>ouedkniss</namespace:name>
+
+    <namespace:parent>
+        <namespace:groupId>org.springframework.boot</namespace:groupId>
+        <namespace:artifactId>spring-boot-starter-parent</namespace:artifactId>
+        <namespace:version>3.3.0</namespace:version>
+        <namespace:relativePath/>
+    </namespace:parent>
+
+    <namespace:properties>
+        <namespace:java.version>17</namespace:java.version> <!-- keep 17, even if you're running 21/24 -->
+    </namespace:properties>
+
+    <namespace:dependencies>
+
+        <!-- Web (Controllers, REST, etc.) -->
+        <namespace:dependency>
+            <namespace:groupId>org.springframework.boot</namespace:groupId>
+            <namespace:artifactId>spring-boot-starter-web</namespace:artifactId>
+        </namespace:dependency>
+
+        <!-- Thymeleaf templates -->
+        <namespace:dependency>
+            <namespace:groupId>org.springframework.boot</namespace:groupId>
+            <namespace:artifactId>spring-boot-starter-thymeleaf</namespace:artifactId>
+        </namespace:dependency>
+
+        <!-- JPA + Hibernate -->
+        <namespace:dependency>
+            <namespace:groupId>org.springframework.boot</namespace:groupId>
+            <namespace:artifactId>spring-boot-starter-data-jpa</namespace:artifactId>
+        </namespace:dependency>
+
+        <!-- MySQL Connector -->
+        <namespace:dependency>
+            <namespace:groupId>com.mysql</namespace:groupId>
+            <namespace:artifactId>mysql-connector-j</namespace:artifactId>
+        </namespace:dependency>
+
+        <!-- Validation (optional but useful) -->
+        <namespace:dependency>
+            <namespace:groupId>org.springframework.boot</namespace:groupId>
+            <namespace:artifactId>spring-boot-starter-validation</namespace:artifactId>
+        </namespace:dependency>
+
+        <namespace:dependency>
+            <namespace:groupId>mysql</namespace:groupId>
+            <namespace:artifactId>mysql-connector-j</namespace:artifactId>
+            <namespace:version>9.0.0</namespace:version>
+        </namespace:dependency>
+
+
+    </namespace:dependencies>
+
+    <namespace:build>
+        <namespace:plugins>
+            <namespace:plugin>
+                <namespace:groupId>org.springframework.boot</namespace:groupId>
+                <namespace:artifactId>spring-boot-maven-plugin</namespace:artifactId>
+            </namespace:plugin>
+        </namespace:plugins>
+    </namespace:build>
+
+</namespace:project>
