@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:replace="fragments/header :: header"></div>
+
+<h2>My Products</h2>
+
+<div th:each="p : ${products}">
+    <img th:src="@{'/images/' + ${p.image}}"
+         alt="Product Image"
+         style="width: 150px; height: auto; margin-bottom: 10px;">
+
+    <h3 th:text="${p.title}"></h3>
+    <p th:text="${p.description}"></p>
+    <p th:text="${p.price}"></p>
+
+    <a th:href="@{/products/edit/{id}(id=${p.id})}">Edit</a> |
+    <a th:href="@{/products/delete/{id}(id=${p.id})}">Delete</a>
+</div>
+
+
+</body>
+</html>

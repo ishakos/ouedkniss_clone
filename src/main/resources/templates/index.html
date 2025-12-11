@@ -7,16 +7,8 @@
 
 <h1>Ouedkniss</h1>
 
-<div th:if="${session.user == null}">
-    <a href="/login">Login</a> |
-    <a href="/register">Register</a>
-</div>
+<div th:replace="fragments/header :: header"></div>
 
-<div th:if="${session.user != null}">
-    Welcome, <b th:text="${session.user.username}"></b> |
-    <a href="/logout">Logout</a> |
-    <a href="/products/add">Add Product</a>
-</div>
 
 <hr>
 

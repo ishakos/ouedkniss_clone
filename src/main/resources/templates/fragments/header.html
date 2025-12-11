@@ -1,0 +1,48 @@
+<!-- src/main/resources/templates/fragments/header.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+
+<div th:fragment="header">
+
+  <header style="
+        background:#f8f9fa;
+        padding:15px;
+        border-bottom:1px solid #ddd;
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+    ">
+    <!-- LEFT NAV LINKS -->
+    <nav>
+      <a href="/" style="margin-right:20px;">Home</a>
+
+
+      <!-- Only show these if user is logged in -->
+      <span th:if="${session.user != null}">
+                <a href="/products" style="margin-right:20px;">Products</a>
+                <a href="/products/add" style="margin-right:20px;">Add Product</a>
+            </span>
+    </nav>
+
+    <!-- RIGHT SIDE USER AREA -->
+    <div>
+      <!-- Logged in -->
+      <span th:if="${session.user != null}">
+                <strong th:text="${session.user.username}" style="margin-right:15px;"></strong>
+                <a href="/logout">Logout</a>
+            </span>
+
+      <!-- Not logged in -->
+      <span th:if="${session.user == null}">
+                <a href="/login" style="margin-right:15px;">Login</a>
+                <a href="/register">Register</a>
+            </span>
+    </div>
+  </header>
+
+</div>
+
+</body>
+</html>

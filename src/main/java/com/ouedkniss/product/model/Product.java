@@ -12,6 +12,7 @@ public class Product {
     private Long id;
 
     private String title;
+    @Column(nullable = true)
     private String description;
     private Double price;
     private String owner;

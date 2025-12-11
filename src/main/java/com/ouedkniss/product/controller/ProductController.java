@@ -1,6 +1,7 @@
 package com.ouedkniss.product.controller;
 
 import com.ouedkniss.product.model.Product;
+import com.ouedkniss.product.repository.ProductRepository;
 import com.ouedkniss.product.service.ProductService;
 import com.ouedkniss.user.model.User;
 import com.ouedkniss.user.repository.UserRepository;
@@ -14,56 +15,52 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
 @Controller
 @RequestMapping("/products")
 public class ProductController {
 
     private final ProductService productService;
+    private final ProductRepository productRepo;
     private final UserRepository userRepo;
 
-    public ProductController(ProductService productService, UserRepository userRepo) {
+    public ProductController(ProductService productService,
+                             ProductRepository productRepo,
+                             UserRepository userRepo) {
         this.productService = productService;
+        this.productRepo = productRepo;
         this.userRepo = userRepo;
     }
 
-    // ✅ THIS PAGE IS NOW AT:  /products
+
+
+    /* ===========================================
+       MY PRODUCTS PAGE  --->   /products
+    ============================================ */
     @GetMapping
-    public String listProducts(Model model, HttpSession session) {
+    public String myProducts(Model model, HttpSession session) {
 
         User loggedUser = (User) session.getAttribute("user");
 
-        // DEBUG LOGS
-        if (loggedUser != null) {
-            System.out.println("Logged user ID = " + loggedUser.getId());
+        if (loggedUser == null)
+            return "redirect:/login";
 
-            for (Product p : productService.getAllProducts()) {
-                System.out.println(
-                        "Product " + p.getId() + " owner: " +
-                                (p.getUser() == null ? "NULL" : p.getUser().getId())
-                );
-            }
+        List<Product> myProducts = productRepo.findByUserId(loggedUser.getId());
+        model.addAttribute("products", myProducts);
 
-            model.addAttribute("products",
-                    productService.getProductsNotOwnedBy(loggedUser.getId()));
-        } else {
-            model.addAttribute("products", productService.getAllProducts());
-        }
-
-        return "products"; // <-- make sure you have products.html
+        return "products";   // your products.html file
     }
 
-    @PostMapping
-    public String createProduct(
-            @RequestParam String title,
-            @RequestParam String description,
-            @RequestParam Double price,
-            @RequestParam Long userId
-    ) {
-        var user = userRepo.findById(userId).orElse(null);
-        var product = new Product(title, description, price, user);
-        productService.saveProduct(product);
-        return "redirect:/products";
+
+
+    /* ===========================================
+       ADD PRODUCT  ---> /products/add
+    ============================================ */
+    @GetMapping("/add")
+    public String showAddForm(Model model) {
+        model.addAttribute("product", new Product());
+        return "addProduct";
     }
 
     @PostMapping("/add")
@@ -72,33 +69,101 @@ public class ProductController {
                              HttpSession session) throws IOException {
 
         User user = (User) session.getAttribute("user");
+        if (user == null) return "redirect:/login";
 
-        if (user == null)
-            return "redirect:/login";
+        // Save file
+        String dir = "uploads/images/";
+        Files.createDirectories(Paths.get(dir));
 
-        // CREATE UPLOAD FOLDER
-        String uploadDir = "uploads/images/";
-        Files.createDirectories(Paths.get(uploadDir));
-
-        // SAVE FILE
         String fileName = imageFile.getOriginalFilename();
-        Path filePath = Paths.get(uploadDir + fileName);
+        Path filePath = Paths.get(dir + fileName);
         Files.write(filePath, imageFile.getBytes());
 
-        // SAVE PRODUCT
-        p.setImage(fileName);
-        p.setOwner(user.getUsername());
+        // Save product
         p.setUser(user);
+        p.setOwner(user.getUsername());
+        p.setImage(fileName);
 
         productService.saveProduct(p);
 
         return "redirect:/products";
     }
 
-    @GetMapping("/add")
-    public String showAddProductForm(Model model) {
-        model.addAttribute("product", new Product());
-        model.addAttribute("users", userRepo.findAll());
-        return "addProduct";
+
+
+    /* ===========================================
+       EDIT PRODUCT ---> /products/edit/{id}
+    ============================================ */
+    @GetMapping("/edit/{id}")
+    public String editProduct(@PathVariable Long id, Model model, HttpSession session) {
+
+        User loggedUser = (User) session.getAttribute("user");
+        if (loggedUser == null) return "redirect:/login";
+
+        Product p = productRepo.findById(id).orElse(null);
+
+        if (p == null || !p.getUser().getId().equals(loggedUser.getId()))
+            return "redirect:/products"; // forbidden
+
+        model.addAttribute("product", p);
+        return "edit-product";
     }
+
+    @PostMapping("/update")
+    public String updateProduct(@ModelAttribute Product product,
+                                @RequestParam("imageFile") MultipartFile imageFile,
+                                HttpSession session) throws IOException {
+
+        User user = (User) session.getAttribute("user");
+
+        if (user == null)
+            return "redirect:/login";
+
+        // Load existing product
+        Product existing = productRepo.findById(product.getId()).orElse(null);
+
+        if (existing == null || !existing.getUser().getId().equals(user.getId()))
+            return "redirect:/products";
+
+        existing.setTitle(product.getTitle());
+        existing.setDescription(product.getDescription());
+        existing.setPrice(product.getPrice());
+
+        // if a new file was uploaded
+        if (!imageFile.isEmpty()) {
+            String uploadDir = "uploads/images/";
+            Files.createDirectories(Paths.get(uploadDir));
+
+            String filename = imageFile.getOriginalFilename();
+            Path filepath = Paths.get(uploadDir + filename);
+            Files.write(filepath, imageFile.getBytes());
+
+            existing.setImage(filename);
+        }
+
+        productRepo.save(existing);
+
+        return "redirect:/products";
+    }
+
+
+
+
+    /* ===========================================
+       DELETE PRODUCT ---> /products/delete/{id}
+    ============================================ */
+    @GetMapping("/delete/{id}")
+    public String deleteProduct(@PathVariable Long id, HttpSession session) {
+
+        User loggedUser = (User) session.getAttribute("user");
+        if (loggedUser == null) return "redirect:/login";
+
+        Product p = productRepo.findById(id).orElse(null);
+
+        if (p != null && p.getUser().getId().equals(loggedUser.getId()))
+            productRepo.delete(p);
+
+        return "redirect:/products";
+    }
+
 }

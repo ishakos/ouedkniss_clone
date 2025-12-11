@@ -1,6 +1,5 @@
 package com.ouedkniss;
 
-import com.ouedkniss.product.repository.ProductRepository;
 import com.ouedkniss.product.service.ProductService;
 import com.ouedkniss.user.model.User;
 import jakarta.servlet.http.HttpSession;
@@ -15,23 +14,19 @@ public class HomeController {
     @Autowired
     private ProductService productService;
 
-    @Autowired
-    private HttpSession session;
-
     @GetMapping("/")
-    public String home(Model model) {
+    public String home(Model model, HttpSession session) {
 
-        User loggedUser = (User) session.getAttribute("user");
+        User user = (User) session.getAttribute("user");
 
-        if (loggedUser != null) {
+        if (user != null) {
             model.addAttribute("products",
-                    productService.getProductsNotOwnedBy(loggedUser.getId()));
+                    productService.getProductsNotOwnedBy(user.getId()));
         } else {
-            model.addAttribute("products", productService.getAllProducts());
+            model.addAttribute("products",
+                    productService.getAllProducts());
         }
 
         return "index";
     }
-
-
 }
