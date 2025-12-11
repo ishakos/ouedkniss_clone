@@ -21,9 +21,12 @@
 <div th:each="p : ${products}">
     <img  th:src="@{'/images/' + ${p.image}}" width="150">
     <h3 th:text="${p.title}"></h3>
-    <h5 th:text="${p.description}"></h5>
     <p th:text="${p.price}"></p>
     <p>Seller: <span th:text="${p.user.username}"></span></p>
+    <a th:href="@{/products/{id}(id=${p.id})}">
+        View Details
+    </a>
+
 
     <hr>
 </div>

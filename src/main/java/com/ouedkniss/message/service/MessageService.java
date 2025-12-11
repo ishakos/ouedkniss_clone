@@ -2,7 +2,6 @@ package com.ouedkniss.message.service;
 
 import com.ouedkniss.message.model.Message;
 import com.ouedkniss.message.repository.MessageRepository;
-import com.ouedkniss.product.model.Product;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,11 +15,11 @@ public class MessageService {
         this.repo = repo;
     }
 
-    public Message save(Message message) {
-        return repo.save(message);
+    public List<Message> getMessages(Long conversationId) {
+        return repo.findByConversationIdOrderByTimestampAsc(conversationId);
     }
 
-    public List<Message> getByProduct(Product product) {
-        return repo.findByProduct(product);
+    public void saveMessage(Message message) {
+        repo.save(message);
     }
 }

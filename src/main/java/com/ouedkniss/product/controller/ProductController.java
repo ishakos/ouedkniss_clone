@@ -166,4 +166,15 @@ public class ProductController {
         return "redirect:/products";
     }
 
+    @GetMapping("/{id}")
+    public String productDetails(@PathVariable Long id, Model model) {
+
+        Product p = productRepo.findById(id).orElse(null);
+        if (p == null) return "redirect:/";
+
+        model.addAttribute("product", p);
+        return "product-details";
+    }
+
+
 }

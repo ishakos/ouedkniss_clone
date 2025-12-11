@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Messages</title>
+
+  <style>
+    body { background: #f7f7f7; font-family: Arial; margin: 0; padding: 0; }
+    .container {
+        width: 750px;
+        margin: 40px auto;
+        background: #fff;
+        padding: 25px;
+        border-radius: 12px;
+        box-shadow: 0 0 12px rgba(0,0,0,0.1);
+    }
+
+    .conversation {
+        display: flex;
+        align-items: center;
+        padding: 15px;
+        border-bottom: 1px solid #eee;
+        transition: 0.2s;
+    }
+
+    .conversation:hover {
+        background: #f2f2f2;
+    }
+
+    .conversation img {
+        width: 70px;
+        height: 70px;
+        border-radius: 8px;
+        margin-right: 15px;
+        object-fit: cover;
+    }
+
+    a { text-decoration: none; color: #333; width: 100%; }
+    p { margin: 3px 0; }
+  </style>
+</head>
+<body>
+
+<div th:replace="fragments/header :: header"></div>
+
+<div class="container">
+  <h2>Your Conversations</h2>
+
+  <div th:each="c : ${conversations}" class="conversation">
+    <a th:href="@{/messages/chat/{id}(id=${c.id})}">
+
+      <!-- PRODUCT IMAGE -->
+      <img th:src="@{/images/{img}(img=${c.product.image})}" alt="product">
+
+      <div>
+        <!-- PRODUCT TITLE -->
+        <p><b th:text="${c.product.title}"></b></p>
+
+        <!-- SHOW WHO YOU'RE CHATTING WITH -->
+        <p th:if="${c.buyer.id == session.user.id}"
+           th:text="'Chat with: ' + ${c.seller.name}">
+        </p>
+
+        <p th:if="${c.seller.id == session.user.id}"
+           th:text="'Chat with: ' + ${c.buyer.name}">
+        </p>
+      </div>
+
+    </a>
+  </div>
+
+</div>
+
+</body>
+</html>

@@ -1,8 +1,7 @@
 package com.ouedkniss.message.model;
 
-import com.ouedkniss.user.model.User;
-import com.ouedkniss.product.model.Product;
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "messages")
@@ -12,64 +11,27 @@ public class Message {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private Long conversationId;
+    private Long senderId;
+
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String content;
 
-    @ManyToOne
-    private User sender;
+    private LocalDateTime timestamp;
 
-    @ManyToOne
-    private User receiver;
+    // --- Getters & Setters ---
+    public Long getId() { return id; }
 
-    @ManyToOne
-    private Product product;
+    public Long getConversationId() { return conversationId; }
+    public void setConversationId(Long conversationId) { this.conversationId = conversationId; }
 
-    public Message() {}
+    public Long getSenderId() { return senderId; }
+    public void setSenderId(Long senderId) { this.senderId = senderId; }
 
-    public Message(String content, User sender, User receiver, Product product) {
-        this.content = content;
-        this.sender = sender;
-        this.receiver = receiver;
-        this.product = product;
-    }
+    public String getContent() { return content; }
+    public void setContent(String content) { this.content = content; }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public User getSender() {
-        return sender;
-    }
-
-    public void setSender(User sender) {
-        this.sender = sender;
-    }
-
-    public User getReceiver() {
-        return receiver;
-    }
-
-    public void setReceiver(User receiver) {
-        this.receiver = receiver;
-    }
-
-    public Product getProduct() {
-        return product;
-    }
-
-    public void setProduct(Product product) {
-        this.product = product;
-    }
-
+    public LocalDateTime getTimestamp() { return timestamp; }
+    public void setTimestamp(LocalDateTime timestamp) { this.timestamp = timestamp; }
 }
+
