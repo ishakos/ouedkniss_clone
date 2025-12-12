@@ -57,19 +57,22 @@ public class HomeController {
             // Search normally
             products = productService.search(name, city, min, max);
 
+            // Convert to mutable list so removeIf works
+            products = new java.util.ArrayList<>(products);
+
             // If logged in → exclude user's own products
             if (user != null) {
                 products.removeIf(p -> p.getUser().getId().equals(user.getId()));
             }
 
         } else {
-            // Default behavior
             if (user != null) {
                 products = productService.getProductsNotOwnedBy(user.getId());
             } else {
                 products = productService.getAllProducts();
             }
         }
+
 
         // Mark wishlist entries
         if (user != null) {
