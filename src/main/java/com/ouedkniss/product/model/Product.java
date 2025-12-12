@@ -17,6 +17,8 @@ public class Product {
     private Double price;
     private String owner;
     private String image;
+    private String city;
+    private boolean saved;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -86,5 +88,13 @@ public class Product {
     public void setOwner(String owner) {
         this.owner = owner;
     }
+
+    public String getCity() { return city; }
+    public void setCity(String city) { this.city = city; }
+
+    @Transient
+
+    public boolean isSaved() { return saved; }
+    public void setSaved(boolean saved) { this.saved = saved; }
 
 }

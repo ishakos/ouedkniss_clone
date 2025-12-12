@@ -21,6 +21,7 @@
 
       <!-- Only show these if user is logged in -->
       <span th:if="${session.user != null}">
+                <a href="/wishlist">❤️ Wishlist</a>
                 <a href="/products" style="margin-right:20px;">Products</a>
                 <a href="/products/add" style="margin-right:20px;">Add Product</a>
             </span>

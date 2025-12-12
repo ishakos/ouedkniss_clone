@@ -30,6 +30,21 @@ public class ProductService {
     public List<Product> getProductsNotOwnedBy(Long userId) {
         return repo.findByUser_IdNot(userId);
     }
+
+    public List<Product> search(String name, String city, Integer min, Integer max) {
+
+        List<Product> all = repo.findAll();
+
+        return all.stream()
+                .filter(p -> name == null || name.isEmpty() ||
+                        p.getTitle().toLowerCase().contains(name.toLowerCase()))
+                .filter(p -> city == null || city.isEmpty() ||
+                        p.getCity().equals(city))
+                .filter(p -> min == null || p.getPrice() >= min)
+                .filter(p -> max == null || p.getPrice() <= max)
+                .toList();
+    }
+
 }
 
 

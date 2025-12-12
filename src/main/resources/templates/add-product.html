@@ -11,6 +11,17 @@
     <input name="title" placeholder="title">
     <input name="description" placeholder="description">
     <input name="price" type="number" placeholder="price">
+    <label for="city">City:</label>
+    <select name="city" id="city" required>
+        <option value="">Select a city</option>
+
+        <option th:each="c : ${cities}"
+                th:value="${c}"
+                th:text="${c}"
+                th:selected="${product.city == c}">
+        </option>
+    </select>
+
     <input name="imageFile" type="file" required>
     <button type="submit">Add Product</button>
 </form>

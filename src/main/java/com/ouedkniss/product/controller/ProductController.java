@@ -25,6 +25,21 @@ public class ProductController {
     private final ProductRepository productRepo;
     private final UserRepository userRepo;
 
+    private static final List<String> CITIES = List.of("Adrar", "Chlef", "Laghouat", "Oum El Bouaghi", "Batna", "Bejaia",
+            "Biskra", "Bechar", "Blida", "Bouira", "Tamanrasset", "Tebessa",
+            "Tlemcen", "Tiaret", "Tizi Ouzou", "Alger", "Djelfa", "Jijel",
+            "Setif", "Saida", "Skikda", "Sidi Bel Abbes", "Annaba", "Guelma",
+            "Constantine", "Medea", "Mostaganem", "MSila", "Mascara", "Ouargla",
+            "Oran", "El Bayadh", "Illizi", "Bordj Bou Arreridj", "Boumerdes",
+            "El Tarf", "Tindouf", "Tissemsilt", "El Oued", "Khenchela",
+            "Souk Ahras", "Tipaza", "Mila", "Ain Defla", "Naama", "Ain Temouchent",
+            "Ghardaia", "Relizane", "Timimoun", "Bordj Badji Mokhtar",
+            "Beni Abbes", "In Salah", "In Guezzam", "Touggourt",
+            "Djanet", "El Mghair", "El Meniaa"
+
+    );
+
+
     public ProductController(ProductService productService,
                              ProductRepository productRepo,
                              UserRepository userRepo) {
@@ -175,6 +190,37 @@ public class ProductController {
         model.addAttribute("product", p);
         return "product-details";
     }
+
+    @GetMapping("/search")
+    public String search(
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String city,
+            @RequestParam(required = false) Double min,
+            @RequestParam(required = false) Double max,
+            Model model
+    ) {
+        List<Product> results = productRepo.advancedSearch(name, city, min, max);
+        model.addAttribute("products", results);
+        return "products";
+    }
+
+    @GetMapping("/products/add")
+    public String addProductForm(Model model) {
+        model.addAttribute("product", new Product());
+        model.addAttribute("cities", CITIES);
+        return "products/add";
+    }
+
+    @GetMapping("/products/edit/{id}")
+    public String editProduct(@PathVariable Long id, Model model) {
+        Product p = productService.getById(id);
+
+        model.addAttribute("product", p);
+        model.addAttribute("cities", CITIES);
+        return "products/edit";
+    }
+
+
 
 
 }
