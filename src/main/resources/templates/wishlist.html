@@ -1,71 +1,58 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-
 <head>
   <meta charset="UTF-8">
   <title>My Wishlist</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 
 <body>
 
-<h1>Ouedkniss</h1>
-
 <div th:replace="fragments/header :: header"></div>
 
-<hr>
+<div class="container">
 
-<h2>Your Wishlist ❤️</h2>
+  <h2 style="margin-bottom:20px">Your Wishlist ❤️</h2>
 
-<div th:if="${wishlist.size() == 0}">
-  <p>You have no items in your wishlist.</p>
-</div>
-
-<form action="/wishlist" method="get" style="margin-bottom: 20px">
-  <input type="text" name="name" placeholder="Name">
-  <select name="city">
-    <option value="">Any City</option>
-    <option th:each="c : ${cities}" th:value="${c}" th:text="${c}"></option>
-  </select>
-  <input type="number" name="min" placeholder="Min Price">
-  <input type="number" name="max" placeholder="Max Price">
-  <button type="submit">Search</button>
-  <!-- RESET BUTTON -->
-  <a href="/wishlist" style="
-      padding: 6px 12px;
-      background: #ccc;
-      color: black;
-      text-decoration: none;
-      border-radius: 4px;
-      margin-left: 10px;
-  ">
-    Reset
-  </a>
-</form>
-
-<div th:each="item : ${wishlist}">
-  <img th:src="@{'/images/' + ${item.product.image}}" width="150">
-
-  <h3 th:text="${item.product.title}"></h3>
-
-  <p th:text="${item.product.price}"></p>
-
-  <p th:text="${item.product.city}"></p>
-
-  <p>Seller: <span th:text="${item.product.user.username}"></span></p>
-
-  <!-- Remove from wishlist -->
-  <div>
-    <a th:href="@{/wishlist/toggle/{id}(id=${item.product.id}, redirect='wishlist')}"
-       class="wishlist-btn">
-      ❌ Remove
-    </a>
+  <!-- EMPTY STATE -->
+  <div th:if="${wishlist.size() == 0}">
+    <p>You have no items in your wishlist.</p>
   </div>
 
-  <a th:href="@{/products/{id}(id=${item.product.id})}">
-    View Details
-  </a>
+  <!-- PRODUCTS -->
+  <div class="grid">
 
-  <hr>
+    <div th:each="item : ${wishlist}" class="card product-card">
+
+      <img th:src="@{'/images/' + ${item.product.image}}"
+           alt="Product image">
+
+      <h3 th:text="${item.product.title}"></h3>
+
+      <p class="price" th:text="${item.product.price} + ' DA'"></p>
+
+      <p class="city" th:text="${item.product.city}"></p>
+
+      <div class="product-actions">
+
+        <!-- VIEW -->
+        <a th:href="@{/products/{id}(id=${item.product.id})}"
+           class="btn">
+          View
+        </a>
+
+        <!-- REMOVE FROM WISHLIST -->
+        <a th:href="@{/wishlist/toggle/{id}(id=${item.product.id}, redirect='wishlist')}"
+           class="btn btn-secondary">
+          Remove ❤️
+        </a>
+
+      </div>
+
+    </div>
+
+  </div>
+
 </div>
 
 </body>

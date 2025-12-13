@@ -1,50 +1,39 @@
-<!-- src/main/resources/templates/fragments/header.html -->
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-
 <body>
-
 <div th:fragment="header">
+    <header class="site-header">
+        <div class="nav">
 
-  <header style="
-        background:#f8f9fa;
-        padding:15px;
-        border-bottom:1px solid #ddd;
-        display:flex;
-        justify-content:space-between;
-        align-items:center;
-    ">
-    <!-- LEFT NAV LINKS -->
-    <nav>
-      <a href="/" style="margin-right:20px;">Home</a>
+            <!-- LEFT -->
+            <div class="nav-left">
+                <span class="logo">Ouedkniss</span>
+                <a href="/">Home</a>
 
+                <span th:if="${session.user != null}">
+          <a href="/wishlist">Wishlist</a>
+          <a href="/products">My Products</a>
+          <a href="/products/add">Add Product</a>
+        </span>
+            </div>
 
-      <!-- Only show these if user is logged in -->
-      <span th:if="${session.user != null}">
-                <a href="/wishlist">❤️ Wishlist</a>
-                <a href="/products" style="margin-right:20px;">Products</a>
-                <a href="/products/add" style="margin-right:20px;">Add Product</a>
-            </span>
-    </nav>
+            <!-- RIGHT -->
+            <div class="nav-right">
+        <span th:if="${session.user != null}">
+          <strong th:text="${session.user.username}"></strong>
+          <a href="/messages">Messages</a>
+          <a href="/profile">Profile</a>
+          <a href="/logout">Logout</a>
+        </span>
 
-    <!-- RIGHT SIDE USER AREA -->
-    <div>
-      <!-- Logged in -->
-      <span th:if="${session.user != null}">
-                <strong th:text="${session.user.username}" style="margin-right:15px;"></strong>
-                <a th:href="@{/messages}">Messages</a>
-                <a th:href="@{/profile}">Edit Profile</a>
-                <a href="/logout">Logout</a>
-            </span>
+                <span th:if="${session.user == null}">
+          <a href="/login">Login</a>
+          <a href="/register">Register</a>
+        </span>
+            </div>
 
-      <!-- Not logged in -->
-      <span th:if="${session.user == null}">
-                <a href="/login" style="margin-right:15px;">Login</a>
-                <a href="/register">Register</a>
-            </span>
-    </div>
-  </header>
-
+        </div>
+    </header>
 </div>
 
 </body>

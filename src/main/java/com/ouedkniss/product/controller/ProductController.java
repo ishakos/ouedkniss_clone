@@ -75,6 +75,7 @@ public class ProductController {
     @GetMapping("/add")
     public String showAddForm(Model model) {
         model.addAttribute("product", new Product());
+        model.addAttribute("cities", CITIES);
         return "add-product";
     }
 
@@ -121,6 +122,7 @@ public class ProductController {
             return "redirect:/products"; // forbidden
 
         model.addAttribute("product", p);
+        model.addAttribute("cities", CITIES);
         return "edit-product";
     }
 

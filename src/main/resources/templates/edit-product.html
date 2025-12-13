@@ -1,40 +1,55 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+  <meta charset="UTF-8">
   <title>Edit Product</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
 
 <div th:replace="fragments/header :: header"></div>
 
+<div class="container card">
+  <h2>Edit Product</h2>
 
-<h2>Edit Product</h2>
+  <form th:action="@{/products/update}"
+        th:object="${product}"
+        method="post"
+        enctype="multipart/form-data">
 
-<form th:action="@{/products/update}" th:object="${product}" method="post" enctype="multipart/form-data">
+    <input type="hidden" th:field="*{id}">
 
-  <input type="hidden" th:field="*{id}"/>
+    <input th:field="*{title}"
+           placeholder="Title"
+           required>
 
-  <label>Title:</label><br>
-  <input type="text" th:field="*{title}" required><br><br>
+    <textarea th:field="*{description}"
+              placeholder="Description"></textarea>
 
-  <label>Description:</label><br>
-  <textarea th:field="*{description}"></textarea><br><br>
+    <input type="number"
+           th:field="*{price}"
+           placeholder="Price"
+           required>
 
-  <label>Price:</label><br>
-  <input type="number" th:field="*{price}" step="0.01" required><br><br>
+    <!-- CITY -->
+    <select th:field="*{city}" required>
+      <option value="">Select city</option>
+      <option th:each="c : ${cities}"
+              th:value="${c}"
+              th:text="${c}">
+      </option>
+    </select>
 
-  <label>Current Image:</label><br>
-  <img th:src="@{'/images/' + ${product.image}}" width="150" alt="Product Image"><br><br>
+    <!-- CURRENT IMAGE -->
+    <img th:src="@{'/images/' + ${product.image}}"
+         style="width:200px;margin-bottom:10px;border-radius:8px">
 
-  <label>Upload New Image (optional):</label><br>
-  <input type="file" name="imageFile"><br><br>
+    <input type="file" name="imageFile">
 
-  <button type="submit">Save Changes</button>
-</form>
+    <button type="submit">Save Changes</button>
 
-<br>
-
-<a href="/products">Back</a>
+  </form>
+</div>
 
 </body>
 </html>
