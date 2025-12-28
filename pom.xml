@@ -64,6 +64,22 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
+
+        <!-- Spring Modulith core starter -->
+        <dependency>
+            <groupId>org.springframework.modulith</groupId>
+            <artifactId>spring-modulith-starter-core</artifactId>
+            <version>1.2.6</version>
+        </dependency>
+
+        <!-- Optional: for tests -->
+        <dependency>
+            <groupId>org.springframework.modulith</groupId>
+            <artifactId>spring-modulith-starter-test</artifactId>
+            <version>2.0.0-RC1</version>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
     <build>
