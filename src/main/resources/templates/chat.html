@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Chat</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<div th:replace="fragments/header :: header"></div>
+
+<div class="container">
+
+    <div class="card chat-container">
+
+        <a href="/messages" class="chat-back">← Back to Conversations</a>
+
+        <!-- MESSAGES -->
+        <div class="chat-messages" id="msgBox">
+
+            <div th:each="m : ${messages}"
+                 th:class="'chat-message ' + (${m.senderId == session.user.id} ? 'me' : 'them')">
+
+                <div class="bubble">
+                    <p th:text="${m.content}"></p>
+                    <span class="time" th:text="${m.timestamp}"></span>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- SEND -->
+        <form method="post"
+              th:action="@{/messages/send}"
+              class="chat-input">
+
+            <input type="hidden"
+                   name="conversationId"
+                   th:value="${conversationId}">
+
+            <input type="text"
+                   maxlength="500"
+                   name="content"
+                   placeholder="Type a message..."
+                   required>
+
+            <button type="submit">Send</button>
+
+        </form>
+
+    </div>
+
+</div>
+
+<script>
+    const box = document.getElementById("msgBox");
+    box.scrollTop = box.scrollHeight;
+</script>
+
+</body>
+</html>

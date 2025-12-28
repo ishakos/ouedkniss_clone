@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title th:text="${product.title}">Product</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<div th:replace="fragments/header :: header"></div>
+
+<div class="container">
+
+  <div class="card product-details">
+
+    <div class="details-grid">
+
+      <!-- IMAGE -->
+      <div>
+        <img th:src="@{'/images/' + ${product.image}}"
+             alt="Product image"
+             class="details-image">
+      </div>
+
+      <!-- INFO -->
+      <div class="details-info">
+
+        <h2 th:text="${product.title}"></h2>
+
+        <p class="price" th:text="${product.price} + ' DA'"></p>
+
+        <h4 th:text="${product.category.name}"></h4>
+
+        <p class="city">
+          📍 <span th:text="${product.city}"></span>
+        </p>
+
+        <hr>
+
+        <h4>Description</h4>
+        <p th:text="${product.description != null ? product.description : 'No description provided.'}"></p>
+
+        <hr>
+
+        <h4>Seller Information</h4>
+
+        <p>
+          <strong>Username:</strong>
+          <span th:text="${product.user.username}"></span>
+        </p>
+
+        <p>
+          <strong>Full name:</strong>
+          <span th:text="${product.user.name}"></span>
+        </p>
+
+        <p>
+          <strong>Phone:</strong>
+          <span th:text="${product.user.phone}"></span>
+        </p>
+
+        <p>
+          <strong>Email:</strong>
+          <span th:text="${product.user.email}"></span>
+        </p>
+
+        <!-- ACTIONS -->
+        <div class="product-actions" style="margin-top:20px">
+
+          <!-- NOT LOGGED -->
+          <a th:if="${session.user == null}"
+             href="/login"
+             class="btn">
+            Login to contact seller
+          </a>
+
+          <!-- LOGGED & NOT OWNER -->
+          <a th:if="${session.user != null and session.user.id != product.user.id}"
+             th:href="@{/messages/start/{id}(id=${product.id})}"
+             class="btn">
+            Contact Seller
+          </a>
+
+          <!-- OWNER -->
+          <a th:if="${session.user != null and session.user.id == product.user.id}"
+             th:href="@{/products/edit/{id}(id=${product.id})}"
+             class="btn btn-secondary">
+            Edit Product
+          </a>
+
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+</body>
+</html>

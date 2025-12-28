@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>My Wishlist</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+
+<div th:replace="fragments/header :: header"></div>
+
+<div class="container">
+
+  <h2 style="margin-bottom:20px">Your Wishlist ❤️</h2>
+
+  <!-- EMPTY STATE -->
+  <div th:if="${wishlist.size() == 0}">
+    <p>You have no items in your wishlist.</p>
+  </div>
+
+  <!-- PRODUCTS -->
+  <div class="grid">
+
+    <div th:each="item : ${wishlist}" class="card product-card">
+
+      <img th:src="@{'/images/' + ${item.product.image}}"
+           alt="Product image">
+
+      <h3 th:text="${item.product.title}"></h3>
+
+      <p class="price" th:text="${item.product.price} + ' DA'"></p>
+
+      <p th:text="${item.product.category.name}"></p>
+
+      <p class="city" th:text="${item.product.city}"></p>
+
+      <div class="product-actions">
+
+        <!-- VIEW -->
+        <a th:href="@{/products/{id}(id=${item.product.id})}"
+           class="btn">
+          View
+        </a>
+
+        <!-- REMOVE FROM WISHLIST -->
+        <a th:href="@{/wishlist/toggle/{id}(id=${item.product.id}, redirect='wishlist')}"
+           class="btn btn-secondary">
+          Remove ❤️
+        </a>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+</body>
+</html>

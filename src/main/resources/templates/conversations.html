@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Messages</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<div th:replace="fragments/header :: header"></div>
+
+<div class="container">
+
+  <h2 style="margin-bottom:20px">Your Conversations</h2>
+
+  <div class="card conversations-list">
+
+    <a th:each="c : ${conversations}"
+       th:href="@{/messages/chat/{id}(id=${c.id})}"
+       class="conversation-row">
+
+      <!-- PRODUCT IMAGE -->
+      <img th:src="@{/images/{img}(img=${c.product.image})}"
+           alt="product">
+
+      <!-- INFO -->
+      <div class="conversation-info">
+
+        <strong th:text="${c.product.title}"></strong>
+
+        <p class="price"
+           th:text="${c.product.price} + ' DA'"></p>
+
+        <!-- WHO YOU CHAT WITH -->
+        <p class="text-muted"
+           th:if="${c.buyer.id == session.user.id}"
+           th:text="'Chat with: ' + ${c.seller.name}">
+        </p>
+
+        <p class="text-muted"
+           th:if="${c.seller.id == session.user.id}"
+           th:text="'Chat with: ' + ${c.buyer.name}">
+        </p>
+
+      </div>
+
+    </a>
+
+  </div>
+
+</div>
+
+</body>
+</html>

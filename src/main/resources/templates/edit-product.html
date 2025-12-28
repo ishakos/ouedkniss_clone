@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Edit Product</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<div th:replace="fragments/header :: header"></div>
+
+<div class="container card">
+  <h2>Edit Product</h2>
+
+  <form th:action="@{/products/update}"
+        th:object="${product}"
+        method="post"
+        enctype="multipart/form-data">
+
+    <input type="hidden" th:field="*{id}">
+
+    <input th:field="*{title}"
+           placeholder="Title"
+           maxlength="100"
+           required>
+
+    <textarea th:field="*{description}"
+              placeholder="Description" maxlength="500"></textarea>
+
+    <input type="number"
+           th:field="*{price}"
+           placeholder="Price"
+           min="0"
+           step="500"
+           required>
+
+    <!-- CATEGORY -->
+    <select name="categoryId" required>
+      <option value="">Select category</option>
+      <option th:each="cat : ${categories}"
+              th:value="${cat.id}"
+              th:text="${cat.name}"
+              th:selected="${product.category != null and cat.id == product.category.id}">
+      </option>
+    </select>
+
+    <!-- CITY -->
+    <select th:field="*{city}" required>
+      <option value="">Select city</option>
+      <option th:each="c : ${cities}"
+              th:value="${c}"
+              th:text="${c}">
+      </option>
+    </select>
+
+    <!-- CURRENT IMAGE -->
+    <img th:src="@{'/images/' + ${product.image}}"
+         style="width:200px;margin-bottom:10px;border-radius:8px">
+
+    <input type="file" name="imageFile">
+
+    <button type="submit">Save Changes</button>
+
+  </form>
+</div>
+
+</body>
+</html>

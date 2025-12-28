@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="header">
+    <header class="site-header">
+        <div class="nav">
+
+            <!-- LEFT -->
+            <div class="nav-left">
+                <span class="logo">Ouedkniss</span>
+                <a href="/">Home</a>
+
+                <span th:if="${session.user != null}">
+          <a href="/wishlist">Wishlist</a>
+          <a href="/products">My Products</a>
+          <a href="/products/add">Add Product</a>
+        </span>
+            </div>
+
+            <!-- RIGHT -->
+            <div class="nav-right">
+        <span th:if="${session.user != null}">
+          <strong th:text="${session.user.username}"></strong>
+          <a href="/messages">Messages</a>
+          <a href="/profile">Profile</a>
+          <a href="/logout">Logout</a>
+        </span>
+
+                <span th:if="${session.user == null}">
+          <a href="/login">Login</a>
+          <a href="/register">Register</a>
+        </span>
+            </div>
+
+        </div>
+    </header>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Edit Profile</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div th:replace="fragments/header :: header"></div>
+<div class="container card" style="max-width:420px">
+  <h2>Edit Profile</h2>
+  <form th:action="@{/profile/update}" method="post">
+    <input name="name" th:value="${user.name}" minlength="3" maxlength="50" required>
+    <input type="email" name="email" th:value="${user.email}" maxlength="50" required>
+    <input name="phone" th:value="${user.phone}" pattern="0[567][0-9]{8}" required>
+    <input type="password" name="password" minlength="3" maxlength="50" placeholder="New password">
+    <button>Save Changes</button>
+  </form>
+</div>
+</body>
+</html>

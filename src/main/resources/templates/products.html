@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Products</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+
+<div th:replace="fragments/header :: header"></div>
+
+<div class="container">
+
+    <h2 style="margin-bottom:20px">My Products</h2>
+
+    <div class="grid">
+
+        <div th:each="p : ${products}" class="card product-card">
+
+            <img th:src="@{'/images/' + ${p.image}}"
+                 alt="Product image">
+
+            <h3 th:text="${p.title}"></h3>
+
+            <p class="price" th:text="${p.price}"></p>
+
+            <p th:text="${p.category.name}"></p>
+
+            <p class="city" th:text="${p.city}"></p>
+
+            <div class="product-actions">
+
+                <!-- EDIT -->
+                <a th:href="@{/products/edit/{id}(id=${p.id})}"
+                   class="btn btn-secondary">
+                    Edit
+                </a>
+
+                <!-- DELETE -->
+                <a th:href="@{/products/delete/{id}(id=${p.id})}"
+                   class="btn btn-secondary"
+                   onclick="return confirm('Delete this product?')">
+                    Delete
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

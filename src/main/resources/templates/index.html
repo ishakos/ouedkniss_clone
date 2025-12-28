@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+
+<div th:replace="fragments/header :: header"></div>
+
+<div class="container">
+
+    <!-- SEARCH -->
+    <form action="/" method="get" class="card home-search">
+        <input type="text" name="name" placeholder="Search product" maxlength="100">
+
+        <select name="categoryId">
+            <option value="">All categories</option>
+            <option th:each="cat : ${categories}"
+                    th:value="${cat.id}"
+                    th:text="${cat.name}"
+                    th:selected="${cat.id == selectedCategory}">
+            </option>
+        </select>
+
+        <select name="city">
+            <option value="">Any City</option>
+            <option th:each="c : ${cities}"
+                    th:value="${c}"
+                    th:text="${c}">
+            </option>
+        </select>
+
+        <div style="display:flex; gap:10px">
+            <input type="number" name="min" placeholder="Min price" min="0" step="500">
+            <input type="number" name="max" placeholder="Max price" min="0" step="500">
+        </div>
+
+        <button type="submit">Search</button>
+    </form>
+
+    <!-- PRODUCTS -->
+    <div class="grid">
+
+        <div th:each="p : ${products}" class="card product-card">
+
+            <img th:src="@{'/images/' + ${p.image}}"
+                 alt="Product image">
+
+            <h3 th:text="${p.title}"></h3>
+
+            <p class="price" th:text="${p.price} + ' DA'"></p>
+
+            <p th:text="${p.category.name}"></p>
+
+            <p class="city" th:text="${p.city}"></p>
+
+            <div class="product-actions">
+
+                <!-- VIEW -->
+                <a th:href="@{/products/{id}(id=${p.id})}"
+                   class="btn">
+                    View
+                </a>
+
+                <!-- WISHLIST -->
+                <a th:if="${session.user != null}"
+                   th:href="@{/wishlist/toggle/{id}(id=${p.id})}"
+                   class="btn btn-secondary"
+                   th:text="${p.saved} ? 'Remove ❤️' : 'Add ❤️'">
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>
