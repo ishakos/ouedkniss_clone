@@ -3,8 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <title>Home</title>
+
+    <!-- CSS -->
     <link rel="stylesheet" th:href="@{/css/style.css}">
+
+    <!-- PWA Manifest (NO /static !!) -->
+    <link rel="manifest" href="/manifest.json">
+
+    <!-- Theme Color -->
+    <meta name="theme-color" content="#28a745">
+
+    <!-- iPhone Fullscreen -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+    <!-- iPhone Icon -->
+    <link rel="apple-touch-icon" href="/icons/icon-192.png">
+
+    <!-- Register Service Worker -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js')
+                .catch(err => console.log('SW failed', err));
+        }
+    </script>
 </head>
+
 
 <body>
 
